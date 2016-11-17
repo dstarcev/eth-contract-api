@@ -29,37 +29,20 @@ public class MordenEthereumFacadeProvider implements EthereumFacadeProvider {
 
     private static class TestNetConfig {
         private final String mordenConfig =
-                "peer.discovery = {\n" +
-                        "\n" +
-                        "    # List of the peers to start\n" +
-                        "    # the search of the online peers\n" +
-                        "    # values: [ip:port, ip:port, ip:port ...]\n" +
-                        "    ip.list = [\n" +
-                        "        \"94.242.229.4:40404\",\n" +
-                        "        \"94.242.229.203:30303\"\n" +
-                        "    ]\n" +
-                        "}\n" +
-                        "\n" +
-                        "# Network id\n" +
-                        "peer.networkId = 2\n" +
-                        "\n" +
-                        "# Enable EIP-8\n" +
-                        "peer.p2p.eip8 = true\n" +
-                        "\n" +
-                        "# the folder resources/genesis\n" +
-                        "# contains several versions of\n" +
-                        "# genesis configuration according\n" +
-                        "# to the network the peer will run on\n" +
-                        "genesis = frontier-morden.json\n" +
-                        "\n" +
-                        "# Blockchain settings (constants and algorithms) which are\n" +
-                        "# not described in the genesis file (like MINIMUM_DIFFICULTY or Mining algorithm)\n" +
-                        "blockchain.config.name = \"morden\"\n" +
-                        "\n" +
-                        "database {\n" +
-                        "    # place to save physical storage files\n" +
-                        "    dir = database-morden\n" +
-                        "}\n";
+                "peer.discovery = {" +
+                        "    enabled = true \n" +
+                        "    ip.list = [" +
+                        "        '94.242.229.4:40404'," +
+                        "        '94.242.229.203:30303'" +
+                        "    ]" +
+                        "} \n" +
+                        "sync.fast.enabled = true \n" +
+                        "peer.p2p.eip8 = true \n" +
+                        "peer.networkId = 2 \n" +
+                        "sync.enabled = true \n" +
+                        "genesis = frontier-morden.json \n" +
+                        "blockchain.config.name = 'morden' \n" +
+                        "database.dir = mordenSampleDb";
 
 
         @Bean
@@ -79,7 +62,7 @@ public class MordenEthereumFacadeProvider implements EthereumFacadeProvider {
     public EthereumFacade create(OnBlockHandler onBlockHandler, OnTransactionHandler onTransactionHandler) {
         Ethereum ethereum = EthereumFactory.createEthereum(TestNetConfig.class);
         EthereumEventHandler ethereumListener = new EthereumEventHandler(ethereum, onBlockHandler, onTransactionHandler);
-        ethereum.init();
+        ethereum.initSyncing();
 
         return new EthereumFacade(new BlockchainProxyReal(ethereum, ethereumListener));
     }

@@ -28,11 +28,12 @@ public class TestnetConnectionTest {
 
     @Test
     public void run() throws Exception {
-        run(standalone, "cow", "");
+        run(morden, "cow", "");
     }
 
     private void run(EthereumFacadeProvider ethereumFacadeProvider, final String id, final String password) throws Exception {
-        EthAccount sender = ethereumFacadeProvider.getKey(id).decode(password);
+        EthAccount sender = morden.listAvailableKeys().get(0).decode("I will not forget this one");
+        //EthAccount sender = ethereumFacadeProvider.getKey(id).decode(password);
         EthereumFacade ethereum = ethereumFacadeProvider.create();
 
         System.out.println(ethereum.getBalance(sender).inEth() + " ETH");

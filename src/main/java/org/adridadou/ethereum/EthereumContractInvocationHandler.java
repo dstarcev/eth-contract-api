@@ -31,7 +31,7 @@ public class EthereumContractInvocationHandler implements InvocationHandler {
     private final Map<EthAddress, Map<EthAccount, SmartContract>> contracts = new HashMap<>();
     private final BlockchainProxy blockchainProxy;
     private final List<OutputTypeHandler<?>> outputHandlers;
-    private final List<InputTypeHandler<? extends Object>> inputHandlers;
+    private final List<InputTypeHandler<?>> inputHandlers;
     private final Map<ProxyWrapper, SmartContractInfo> info = new HashMap<>();
 
     EthereumContractInvocationHandler(BlockchainProxy blockchainProxy) {

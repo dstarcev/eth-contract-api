@@ -29,6 +29,7 @@ public class TestnetEthereumFacadeProvider implements EthereumFacadeProvider {
                         // set port to 0 to disable accident inbound connections
                         "peer.listen.port = 0 \n" +
                         "peer.networkId = 161 \n" +
+                        "sync.fast.enabled = true \n" +
                         // a number of public peers for this network (not all of then may be functioning)
                         "peer.active = [" +
                         "    { url = 'enode://9bcff30ea776ebd28a9424d0ac7aa500d372f918445788f45a807d83186bd52c4c0afaf504d77e2077e5a99f1f264f75f8738646c1ac3673ccc652b65565c3bb@peer-1.ether.camp:30303' }," +
@@ -60,7 +61,7 @@ public class TestnetEthereumFacadeProvider implements EthereumFacadeProvider {
     public EthereumFacade create(OnBlockHandler onBlockHandler, OnTransactionHandler onTransactionHandler) {
         Ethereum ethereum = EthereumFactory.createEthereum(TestNetConfig.class);
         EthereumEventHandler ethereumListener = new EthereumEventHandler(ethereum, onBlockHandler, onTransactionHandler);
-        ethereum.init();
+        ethereum.initSyncing();
 
         return new EthereumFacade(new BlockchainProxyReal(ethereum, ethereumListener));
     }
